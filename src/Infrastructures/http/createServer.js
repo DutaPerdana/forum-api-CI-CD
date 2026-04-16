@@ -20,6 +20,7 @@ const createServer = async (container) => {
   // Middleware for parsing JSON
   app.use(express.json());
 
+  app.set('trust proxy', 1);
   const threadsLimiter = rateLimit({
     windowMs: 1 * 60 * 1000, // 1 menit
     max: 90, // maksimal 90 request per 1 menit
