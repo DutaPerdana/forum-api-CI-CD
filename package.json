@@ -13,7 +13,7 @@
     "migrate": "node-pg-migrate",
     "migrate:test": "node-pg-migrate --envPath .test.env",
     "lint": "eslint ./",
-    "lint:fix":"eslint ./ --fix"
+    "lint:fix": "eslint ./ --fix"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +22,7 @@
     "bcrypt": "^5.1.1",
     "dotenv": "^16.6.1",
     "express": "^5.0.1",
+    "express-rate-limit": "^8.3.2",
     "instances-container": "^2.0.6",
     "jsonwebtoken": "^9.0.2",
     "nanoid": "^5.0.9",
