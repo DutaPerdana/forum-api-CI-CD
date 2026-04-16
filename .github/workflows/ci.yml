@@ -52,7 +52,7 @@ jobs:
           echo "PGDATABASE_TEST=forumapidb_test" >> .env
           echo "PGPORT_TEST=5432" >> .env
           echo "ACCESS_TOKEN_KEY=kuncirahasia" >> .env
-          echo "REFRESH_TOKEN_KEY=kuncirahasia" >> .env
+          echo "REFRESH_TOKEN_KEY=kuncirahasia_refreshh" >> .env
           echo "ACCCESS_TOKEN_AGE=1800" >> .env
 
       - name: Run Database Migrations
