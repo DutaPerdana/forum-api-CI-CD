@@ -2,4 +2,3 @@ node_modules
 config/database/test.json
 coverage
 .env
-nginx.conf
