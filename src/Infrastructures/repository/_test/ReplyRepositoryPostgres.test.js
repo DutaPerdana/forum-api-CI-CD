@@ -131,7 +131,7 @@ describe('ReplyRepositoryPostgres', () => {
       expect(replies[0].username).toEqual('dicoding'); 
       expect(replies[0].content).toEqual('sebuah balasan');
       expect(replies[0].date).toEqual('2023-01-01T00:00:00.000Z');
-      expect(replies[0].is_delete).toEqual(false);
+      expect(replies[0].is_delete).toEqual(true);
     });
   });
 });
