@@ -1,0 +1,57 @@
+name: Continuous Integration
+
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    # Membuat Database PostgreSQL bohongan di server GitHub
+    services:
+      postgres:
+        image: postgres:16.2
+        env:
+          POSTGRES_USER: developer
+          POSTGRES_PASSWORD: supersecretpassword
+          POSTGRES_DB: forumapidb_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js v22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm install
+
+      # Membuat file .env rahasia agar bisa dibaca saat testing di GitHub
+      - name: Create .env file for Testing
+        run: |
+          echo "PGHOST_TEST=localhost" >> .env
+          echo "PGUSER_TEST=developer" >> .env
+          echo "PGPASSWORD_TEST=supersecretpassword" >> .env
+          echo "PGDATABASE_TEST=forumapidb_test" >> .env
+          echo "PGPORT_TEST=5432" >> .env
+          echo "ACCESS_TOKEN_KEY=kuncirahasia" >> .env
+          echo "REFRESH_TOKEN_KEY=kuncirahasia" >> .env
+          echo "ACCCESS_TOKEN_AGE=1800" >> .env
+
+      - name: Run Database Migrations
+        run: npm run migrate up
+
+      - name: Run All Tests (Coverage 100%)
+        run: npm run test
