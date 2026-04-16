@@ -41,13 +41,18 @@ jobs:
       # Membuat file .env rahasia agar bisa dibaca saat testing di GitHub
       - name: Create .env file for Testing
         run: |
+          echo "PGHOST=localhost" >> .env
+          echo "PGUSER=developer" >> .env
+          echo "PGPASSWORD=supersecretpassword" >> .env
+          echo "PGDATABASE=forumapidb_test" >> .env
+          echo "PGPORT=5432" >> .env
           echo "PGHOST_TEST=localhost" >> .env
           echo "PGUSER_TEST=developer" >> .env
           echo "PGPASSWORD_TEST=supersecretpassword" >> .env
           echo "PGDATABASE_TEST=forumapidb_test" >> .env
           echo "PGPORT_TEST=5432" >> .env
           echo "ACCESS_TOKEN_KEY=kuncirahasia" >> .env
-          echo "REFRESH_TOKEN_KEY=kuncirahasia" >> .env
+          echo "REFRESH_TOKEN_KEY=kuncirahasia_refreshh" >> .env
           echo "ACCCESS_TOKEN_AGE=1800" >> .env
 
       - name: Run Database Migrations
