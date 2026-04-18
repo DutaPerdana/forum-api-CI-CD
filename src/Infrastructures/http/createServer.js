@@ -1,5 +1,4 @@
 import express from 'express';
-import rateLimit from 'express-rate-limit';
 import swaggerUi from 'swagger-ui-express';
 import fs from 'fs';
 import path from 'path';
@@ -26,19 +25,7 @@ const createServer = async (container) => {
   // Middleware for parsing JSON
   app.use(express.json());
 
-  app.set('trust proxy', 1);
-  const threadsLimiter = rateLimit({
-    windowMs: 1 * 60 * 1000, // 1 menit
-    max: 90, // maksimal 90 request per 1 menit
-    message: {
-      status: 'fail',
-      message: 'Terlalu banyak permintaan, silakan coba lagi nanti.',
-    },
-    standardHeaders: true,
-    legacyHeaders: false,
-  });
-
-  app.use('/threads', threadsLimiter);
+  // app.use('/threads', threadsLimiter);
 
   // Register routes
   app.use('/users', users(container));
