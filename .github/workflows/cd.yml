@@ -3,13 +3,22 @@ name: Continuous Deployment
 on:
   push:
     branches:
-      - main
-      - master
+      - main  
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger Vercel Deployment
-        run: |
-          curl -X POST ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
+      - name: SSH and Deploy to VPS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd ~/forum-api-CI-CD
+            git pull origin main
+            npm install
+            npm run migrate up
+            pm2 restart forum-api --update-env

@@ -1,0 +1,157 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Forum API - Dicoding Expert",
+    "description": "Dokumentasi interaktif untuk RESTful API Forum Diskusi.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000",
+      "description": "Local Development Server"
+    },
+    {
+      "url": "https://[URL-VERCEL-KOMANDAN].vercel.app",
+      "description": "Production Server (Vercel)"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "paths": {
+    "/users": {
+      "post": {
+        "summary": "Mendaftarkan pengguna baru",
+        "tags": ["Users"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": { "type": "string", "example": "dicoding" },
+                  "password": { "type": "string", "example": "secret" },
+                  "fullname": { "type": "string", "example": "Dicoding Indonesia" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "User berhasil didaftarkan" }
+        }
+      }
+    },
+    "/authentications": {
+      "post": {
+        "summary": "Login / Mendapatkan Access Token",
+        "tags": ["Authentications"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": { "type": "string", "example": "dicoding" },
+                  "password": { "type": "string", "example": "secret" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Login berhasil" }
+        }
+      },
+      "put": {
+        "summary": "Memperbarui Access Token",
+        "tags": ["Authentications"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "refreshToken": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Token berhasil diperbarui" }
+        }
+      },
+      "delete": {
+        "summary": "Logout / Menghapus Refresh Token",
+        "tags": ["Authentications"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "refreshToken": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Logout berhasil" }
+        }
+      }
+    },
+    "/threads": {
+      "post": {
+        "summary": "Membuat Thread Baru",
+        "tags": ["Threads"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string", "example": "Sebuah Judul" },
+                  "body": { "type": "string", "example": "Sebuah Body" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Thread berhasil dibuat" }
+        }
+      }
+    },
+    "/threads/{threadId}": {
+      "get": {
+        "summary": "Melihat detail Thread beserta Komentar dan Balasan",
+        "tags": ["Threads"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "threadId",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Detail thread berhasil diambil" }
+        }
+      }
+    }
+  }
+}

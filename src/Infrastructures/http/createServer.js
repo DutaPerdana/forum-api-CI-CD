@@ -1,5 +1,8 @@
 import express from 'express';
 import rateLimit from 'express-rate-limit';
+import swaggerUi from 'swagger-ui-express';
+import fs from 'fs';
+import path from 'path';
 import ClientError from '../../Commons/exceptions/ClientError.js';
 import DomainErrorTranslator from '../../Commons/exceptions/DomainErrorTranslator.js';
 import users from '../../Interfaces/http/api/users/index.js';
@@ -15,6 +18,9 @@ import replies from '../../Interfaces/http/api/replies/index.js';
 // file update
 
 const createServer = async (container) => {
+  const swaggerDocument = JSON.parse(
+    fs.readFileSync(path.resolve(process.cwd(), 'docs/swagger.json'), 'utf8')
+  );
   const app = express();
 
   // Middleware for parsing JSON
@@ -44,6 +50,7 @@ const createServer = async (container) => {
   app.use('/threads', comments(container, authMiddleware));
 
   app.use('/threads', replies(container, authMiddleware));
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
   // Global error handler
   app.use((error, req, res, next) => {
